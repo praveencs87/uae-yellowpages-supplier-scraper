@@ -1,0 +1,36 @@
+{
+    "actorSpecification": 1,
+    "name": "uae-yellowpages-supplier-scraper",
+    "title": "UAE Yellow Pages Supplier Scraper",
+    "description": "Extract verified local businesses, suppliers, and contractors across Dubai, Abu Dhabi, and the UAE. Premium B2B leads.",
+    "version": "1.0",
+    "input": "./input_schema.json",
+    "dockerfile": "./Dockerfile",
+    "minMemoryMbytes": 1024,
+    "maxMemoryMbytes": 4096,
+    "pricingModel": "PAY_PER_EVENT",
+    "pricingEvents": [
+        {
+            "eventName": "apify-actor-start",
+            "pricePerEvent": 0.25,
+            "description": "Base fee for starting the crawler (Playwright overhead)"
+        },
+        {
+            "eventName": "lead-extracted",
+            "pricePerEvent": 0.0035,
+            "description": "Charged per UAE Yellow Pages lead successfully extracted ($3.50 per 1k leads)"
+        }
+    ],
+    "isPublic": true,
+    "seoTitle": "UAE Yellow Pages Scraper | Dubai & Abu Dhabi B2B Leads",
+    "seoDescription": "Scrape thousands of verified businesses, suppliers, and contractors from UAE Yellow Pages. Extract direct contacts for high-value B2B sales in the Middle East.",
+    "categories": [
+        "LEAD_GENERATION",
+        "BUSINESS"
+    ],
+    "defaultRunOptions": {
+        "build": "latest",
+        "timeoutSecs": 3600,
+        "memoryMbytes": 1024
+    }
+}
