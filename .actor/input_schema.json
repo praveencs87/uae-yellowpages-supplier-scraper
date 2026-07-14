@@ -3,19 +3,14 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "keyword": {
-            "title": "Keyword (Industry/Service)",
-            "type": "string",
-            "description": "The specific industry or service (e.g., 'building materials', 'contractors', 'logistics').",
-            "editor": "textfield",
-            "prefill": "building materials"
-        },
-        "location": {
-            "title": "Location (City)",
-            "type": "string",
-            "description": "The UAE City (e.g., 'Dubai', 'Abu Dhabi', 'Sharjah').",
-            "editor": "textfield",
-            "prefill": "Dubai"
+        "startUrls": {
+            "title": "Start URLs",
+            "type": "array",
+            "description": "List of search URLs to scrape.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://www.yellowpages.ae/search/dubai/building-materials" }
+            ]
         },
         "maxLeads": {
             "title": "Maximum Leads",
@@ -32,5 +27,5 @@
             "editor": "proxy"
         }
     },
-    "required": ["keyword", "location"]
+    "required": ["startUrls"]
 }

@@ -7,8 +7,7 @@ await Actor.init();
 try {
     const input = await Actor.getInput();
     const { 
-        keyword = 'building materials', 
-        location = 'Dubai', 
+        startUrls = [],
         maxLeads = 100,
         proxyConfiguration 
     } = input || {};
@@ -20,7 +19,7 @@ try {
         apifyProxyCountry: 'AE'
     });
 
-    log.info(`Searching UAE Yellow Pages for "${keyword}" in "${location}"`);
+    log.info(`Searching UAE Yellow Pages...`);
     await Actor.charge({ eventName: 'apify-actor-start', count: 1 });
 
     let extractedCount = 0;
@@ -60,7 +59,7 @@ try {
 
                 // Category
                 const catElement = await item.$('.category, .industry, .cat-link');
-                const category = catElement ? (await catElement.innerText()).trim() : keyword;
+                const category = catElement ? (await catElement.innerText()).trim() : '';
 
                 // Phones
                 const phoneElement = await item.$('a[href^="tel:"], .phone, .contact-number, .call-btn, .mobile');
@@ -140,15 +139,14 @@ try {
         }
     });
 
-    const formatLocation = location.toLowerCase().replace(/\s+/g, '-');
-    const formatKeyword = keyword.toLowerCase().replace(/\s+/g, '-');
-    
-    // We construct a generalized search URL for Yellow Pages AE platforms
-    const startUrl = `https://www.yellowpages.ae/search?q=${encodeURIComponent(keyword)}&loc=${encodeURIComponent(location)}`;
-    
-    await crawler.addRequests([{
-        url: startUrl
-    }]);
+    if (startUrls && startUrls.length > 0) {
+        for (const req of startUrls) {
+            await crawler.addRequests([{ url: typeof req === 'string' ? req : req.url }]);
+        }
+    } else {
+        log.warning('No startUrls provided. Using default.');
+        await crawler.addRequests([{ url: 'https://www.yellowpages.ae/search/dubai/building-materials' }]);
+    }
 
     armKillSwitch(crawler);
     await crawler.run();
